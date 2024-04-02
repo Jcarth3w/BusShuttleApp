@@ -35,7 +35,7 @@
 </div>
 
 <h2>Loops</h2>
-<button asp-action="Add ">Create new loop</button>
+<a asp-action="CreateLoop">Create new loop</a>
 
 <table class="dataTable">
     <thead>
@@ -53,8 +53,8 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <button asp-action="Edit" asp-Routes-id="@item.Id">Edit</button> | <button asp-action="Delete" 
-                    asp-Routes-id="@item.Id">Delete</button>
+                    <a asp-action="UpdateLoop" asp-route-id="@item.Id">Edit</a> | <a asp-action="Delete" 
+                    asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

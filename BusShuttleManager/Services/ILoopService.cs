@@ -10,7 +10,9 @@ namespace BusShuttleManager.Services
 
         public void UpdateLoopById(int id, string name);
 
-        public void CreateNewLoop(string name);
+        public int GetAmountOfLoops();
+
+        public void CreateNewLoop(int id, string name);
     }
 
 }

@@ -3,11 +3,12 @@ namespace BusShuttleManager.Services
 {
     public class LoopServices : ILoopService
     {
-        private readonly DataContext db = new DataContext();
+        private DataContext db;
         List<Loop> loops;
 
         public List<Loop> getAllLoops()
         {
+            db = new DataContext();
             loops = db.Loop
                 .Select(l => new Loop(l.Id, l.Name)).ToList();
             return loops;
@@ -15,6 +16,7 @@ namespace BusShuttleManager.Services
 
         public Loop findLoopById(int id)
         {
+            db = new DataContext();
             var loop = db.Loop
                 .SingleOrDefault(loop => loop.Id == id);
 
@@ -23,6 +25,7 @@ namespace BusShuttleManager.Services
 
         public void UpdateLoopById(int id, string name)
         {
+            db = new DataContext();
             var existingLoop = db.Loop.SingleOrDefault(loop => loop.Id == id);
             existingLoop.Update(name);
 
@@ -35,9 +38,15 @@ namespace BusShuttleManager.Services
                 db.SaveChanges();
             }
         }
-
-        public void CreateNewLoop(string name)
+        public int GetAmountOfLoops()
         {
+            db = new DataContext();
+            return db.Loop.Count();
+        }
+
+        public void CreateNewLoop(int id, string name)
+        {
+            db = new DataContext();
             var totalLoops = db.Loop.Count();
             db.Add(new Loop{Id=totalLoops+1, Name=name});
             db.SaveChanges();

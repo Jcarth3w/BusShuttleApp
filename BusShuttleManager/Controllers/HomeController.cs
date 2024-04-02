@@ -183,6 +183,39 @@ public class HomeController : Controller
         return View(loopService.getAllLoops().Select(l => LoopViewModel.FromLoop(l)));
     }
 
+    public IActionResult UpdateLoop([FromRoute] int id)
+    {
+        var loopEditModel =  new LoopEditModel();
+        var loop = loopService.findLoopById(id);
+
+        loopEditModel = LoopEditModel.FromLoop(loop);
+        return View(loopEditModel);
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateLoop(int id, [Bind("Name")] LoopEditModel loop)
+    {
+        loopService.UpdateLoopById(id, loop.Name);
+        return RedirectToAction("Loops");
+    }
+
+    public IActionResult CreateLoop()
+    {
+        var loopCreateModel = LoopCreateModel.NewLoop(loopService.GetAmountOfLoops());
+        return View(loopCreateModel);
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateLoop(int id, [Bind("Name")] LoopCreateModel loop)
+    {
+        loopService.CreateNewLoop(id, loop.Name);
+        return RedirectToAction("Loops");
+    }
+
 
     public IActionResult Entries()
     {
