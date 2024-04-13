@@ -14,7 +14,7 @@ namespace BusShuttleManager.Services
             return loops;
         }
 
-        public Loop findLoopById(int id)
+        public Loop getLoopById(int id)
         {
             db = new DataContext();
             var loop = db.Loop

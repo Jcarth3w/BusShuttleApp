@@ -6,13 +6,15 @@ namespace BusShuttleManager.Services
     {
         public List<Routes> getAllRoutes();
 
+        public List<Routes> getRoutesByLoopId(int loopId);
+
         public Routes findRouteById(int id);
 
         public void UpdateRouteById(int id, int order);
 
         public int GetAmountOfRoutes();
 
-        public void CreateNewRoute(int order);
+        public void CreateNewRoute(int order, int loopId, int stopId);
     }
 
 }

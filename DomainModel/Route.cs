@@ -9,6 +9,14 @@ namespace DomainModel
 
           public int Order {get; set;}
 
+          public int LoopId {get; set;}
+
+          public Loop Loop {get; set;}
+
+          public int StopId {get; set;}
+
+          public Stop stop {get; set;}
+
           public Routes()
           {
                

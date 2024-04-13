@@ -7,17 +7,31 @@ namespace BusShuttleManager.Models
 {
     public class RoutesViewModel
     {
-        public int Id { get; set;}
+        public List<Loop> Loops { get; set; }
+        public List<Routes> Routes { get; set; } 
+        public Loop SelectedLoop { get; set; } 
 
-        public int Order {get; set;}        
+        public List<Stop> Stops { get; set; }
 
-        public static RoutesViewModel FromRoutes(Routes Routes)
+        public static RoutesViewModel FromRoutes(List<Routes> routes, List<Loop> loops)
         {
             return new RoutesViewModel
             {
-                Id = Routes.Id,
-                Order = Routes.Order
+                Loops = loops,
+                Routes = routes
+
             };
         } 
+
+        public static RoutesViewModel FromLoopID(List<Routes> routes, List<Loop> loops, Loop selectedLoop, List<Stop> stops)
+        {
+            return new RoutesViewModel
+            {
+                Loops = loops,
+                Routes = routes,
+                SelectedLoop = selectedLoop,
+                Stops = stops
+            };
+        }
     }
 }

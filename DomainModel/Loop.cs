@@ -6,6 +6,8 @@ public class Loop
 
      public string Name {get; set;}
 
+     public List<Routes> Routes { get; set;}
+
      public Loop()
      {
 

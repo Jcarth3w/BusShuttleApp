@@ -1,0 +1,31 @@
+@model IEnumerable<BusShuttleManager.Models.LoopViewModel>
+@{
+    ViewData["Title"] = "Loops";
+}
+
+<h2>Loops</h2>
+<a asp-action="CreateLoop">Create new loop</a>
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="UpdateLoop" asp-route-id="@item.Id">Edit</a> | <a asp-action="DeleteLoop" 
+                    asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

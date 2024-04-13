@@ -3,6 +3,7 @@ using System;
 using DomainModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusShuttleManager.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240407204715_DomainModel")]
+    partial class DomainModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -92,20 +95,10 @@ namespace BusShuttleManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("LoopId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Order")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("StopId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("LoopId");
-
-                    b.HasIndex("StopId");
 
                     b.ToTable("Routes");
                 });
@@ -129,30 +122,6 @@ namespace BusShuttleManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stop");
-                });
-
-            modelBuilder.Entity("DomainModel.Routes", b =>
-                {
-                    b.HasOne("DomainModel.Loop", "Loop")
-                        .WithMany("Routes")
-                        .HasForeignKey("LoopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DomainModel.Stop", "Stop")
-                        .WithMany()
-                        .HasForeignKey("StopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Loop");
-
-                    b.Navigation("Stop");
-                });
-
-            modelBuilder.Entity("DomainModel.Loop", b =>
-                {
-                    b.Navigation("Routes");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,6 +14,13 @@ namespace BusShuttleManager.Services
             return routess;
         }
 
+        public List<Routes> getRoutesByLoopId(int loopId)
+        {
+            db = new DataContext();
+            var routes = db.Routes.Where(r => r.LoopId == loopId).ToList();
+            return routes;
+        }
+
         public Routes findRouteById(int id)
         {
             db = new DataContext();
@@ -45,11 +52,11 @@ namespace BusShuttleManager.Services
             return db.Routes.Count();
         }
 
-        public void CreateNewRoute(int order)
+        public void CreateNewRoute(int order, int loopId, int stopId)
         {
             db = new DataContext();
             var totalRoutess = db.Routes.Count();
-            db.Add(new Routes{Id = totalRoutess, Order=order});
+            db.Add(new Routes{Id = totalRoutess + 1, LoopId=loopId, Order=order, StopId=stopId});
             db.SaveChanges();
         }
     }

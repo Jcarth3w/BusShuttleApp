@@ -6,7 +6,7 @@ namespace BusShuttleManager.Services
     {
         public List<Loop> getAllLoops();
 
-        public Loop findLoopById(int id);
+        public Loop getLoopById(int id);
 
         public void UpdateLoopById(int id, string name);
 

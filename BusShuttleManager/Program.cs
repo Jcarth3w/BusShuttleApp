@@ -1,47 +1,67 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using BusShuttleManager.Data;
 using BusShuttleManager.Services;
+using System.Security.Claims;
 
-namespace BusShuttleManager;
+var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-public class Program
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAuthorization(options =>
 {
-    public static void Main(string[] args)
+    options.AddPolicy("ManagerOnly", policy =>
     {
-        var builder = WebApplication.CreateBuilder(args);
+        policy.RequireRole("Manager");
+    });
+});
 
-        ConfigureServices(builder.Services); 
+builder.Services.AddRazorPages();
+builder.Services.AddScoped<IDriverService, DriverServices>();
+builder.Services.AddScoped<IBusService, BusServices>();
+builder.Services.AddScoped<IStopService, StopServices>();
+builder.Services.AddScoped<ILoopService, LoopServices>();
+builder.Services.AddScoped<IRouteService, RouteServices>();
+builder.Services.AddScoped<IEntryService, EntryServices>();
 
-        var app = builder.Build();
 
+var app = builder.Build();
 
-        if(!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Home/Error");
-            app.UseHsts();
-        }
-        
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseRouting();
-
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Drivers}/{id?}");
-        
-        app.Run();
-    }
-
-    private static void ConfigureServices(IServiceCollection services)
-    {
-
-        services.AddControllersWithViews();
-
-        services.AddScoped<IDriverService, DriverServices>();
-        services.AddScoped<IBusService, BusServices>();
-        services.AddScoped<IRouteService, RouteServices>();
-        services.AddScoped<IStopService, StopServices>();
-        services.AddScoped<IEntryService, EntryServices>();
-        services.AddScoped<ILoopService, LoopServices>();
-    }
-
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
 }
+else
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();
+});
+
+app.MapRazorPages();
+
+app.Run();

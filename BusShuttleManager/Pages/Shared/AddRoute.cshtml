@@ -1,0 +1,67 @@
+@model BusShuttleManager.Models.RoutesViewModel
+@{
+    ViewData["Title"] = "Routes";
+}
+
+
+
+<h2>Routes</h2>
+
+@using (Html.BeginForm("Routes", "Home", FormMethod.Post))
+{
+    <div>
+        @Html.DropDownList("selectedLoopId", new SelectList(Model.Loops, "Id", "Name"), "Select Loop", new { onchange = "if(this.value != '') this.form.submit();" })
+    </div>
+
+}
+
+@if (Model.Stops != null && Model.Stops.Any())
+{
+   @using (Html.BeginForm("AddRoute", "Home", FormMethod.Post))
+    {
+        <div>
+            @Html.DropDownList("selectStopId", new SelectList(Model.Stops, "Id", "Name"), "Select Stop")
+            <button type="submit">Assign</button>
+            <input type="hidden" name="selectedLoopId" value="@Model.SelectedLoop.Id" />
+        </div>
+    }   
+}
+
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                Stop
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Routes.OrderBy(route => route.Order))
+        {
+            <tr>
+                <td>
+                    <form asp-action="MoveUp" asp-route-id="@item.Id">
+                        <button type="submit">Move Up</button>
+                    </form>
+                    <form asp-action="MoveDown" asp-route-id="@item.Id">
+                        <button type="submit">Move Down</button>
+                    </form>
+                </td>
+                <td>
+                    @if (Model.Stops != null)
+                    {
+                        var stop = Model.Stops.FirstOrDefault(s => s.Id == item.StopId);
+                        if (stop != null)
+                        {
+                            @stop.Name
+                        }
+                    }
+                    <a asp-action="Delete" asp-Routes-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

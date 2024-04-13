@@ -1,0 +1,30 @@
+@model IEnumerable<BusShuttleManager.Models.DriverViewModel>
+@{
+    ViewData["Title"] = "Drivers";
+}
+
+<h2>Drivers</h2>
+<a asp-action="CreateDriver">Add new driver</a>
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>
+                    <a asp-action="UpdateDriver" asp-route-id="@item.Id">Edit</a> | 
+                    <a asp-action="DeleteDriver" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,31 @@
+@model IEnumerable<BusShuttleManager.Models.BusViewModel>
+@{
+    ViewData["Title"] = "Busses";
+}
+
+<h2>Busses</h2>
+<a asp-action="CreateBus">Create new bus</a>
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BusName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusName)
+                </td>
+                <td>
+                    <a asp-action="UpdateBus" asp-route-id="@item.Id">Edit</a> | <a asp-action="DeleteBus" 
+                    asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
