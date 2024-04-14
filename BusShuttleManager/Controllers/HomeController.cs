@@ -188,15 +188,41 @@ public class HomeController : Controller
         var selectedLoop = loopService.getLoopById(selectedLoopId); 
         var routes = routeService.getRoutesByLoopId(selectedLoopId); 
         var newOrder = routes.Count + 1;
-        _logger.LogInformation("New order: " + newOrder);
         routeService.CreateNewRoute(newOrder, selectedLoopId, selectStopId);
         routes = routeService.getRoutesByLoopId(selectedLoopId); 
         var viewModel = RoutesViewModel.FromLoopID(routes, loops, selectedLoop, stops);
         return View(viewModel);
     }
 
+    
+    [Authorize(Policy = "ManagerOnly")]
+    [HttpPost]
+    public IActionResult MoveRouteUp(int selectedLoopId, int routeId)
+    {
+        var loops = loopService.getAllLoops(); 
+        var stops = stopService.getAllStops();
+        var selectedLoop = loopService.getLoopById(selectedLoopId); 
+        var routes = routeService.getRoutesByLoopId(selectedLoopId); 
+        routeService.IncreaseRouteOrder(routeId);
+        _logger.LogInformation("Here");
+        var viewModel = RoutesViewModel.FromLoopID(routes, loops, selectedLoop, stops);
+        return View(viewModel);
+    }
 
 
+    [Authorize(Policy = "ManagerOnly")]
+    [HttpPost]
+    public IActionResult MoveRouteDown(int selectedLoopId, int routeId)
+    {
+        var loops = loopService.getAllLoops(); 
+        var stops = stopService.getAllStops();
+        var selectedLoop = loopService.getLoopById(selectedLoopId); 
+        var routes = routeService.getRoutesByLoopId(selectedLoopId); 
+        routeService.DecreaseRouteOrder(routeId);
+        _logger.LogInformation("routeId: " + routeId);
+        var viewModel = RoutesViewModel.FromLoopID(routes, loops, selectedLoop, stops);
+        return View(viewModel);
+    }
 
 
     /*STOPS*/

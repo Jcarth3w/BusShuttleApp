@@ -59,5 +59,42 @@ namespace BusShuttleManager.Services
             db.Add(new Routes{Id = totalRoutess + 1, LoopId=loopId, Order=order, StopId=stopId});
             db.SaveChanges();
         }
+
+
+        public void IncreaseRouteOrder(int id)
+        {
+            using (db = new DataContext())
+            {
+                var route = db.Routes.FirstOrDefault(r => r.Id == id);
+                if (route != null && route.Order > 1)
+                {
+                    var prevRoute = db.Routes.FirstOrDefault(r => r.Order == route.Order - 1);
+                    if (prevRoute != null)
+                    {
+                        prevRoute.Order++;
+                        route.Order--;
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        public void DecreaseRouteOrder(int id)
+        {
+            using (db = new DataContext())
+            {
+                var route = db.Routes.FirstOrDefault(r => r.Id == id);
+                if (route != null)
+                {
+                    var nextRoute = db.Routes.FirstOrDefault(r => r.Order == route.Order + 1);
+                    if (nextRoute != null)
+                    {
+                        nextRoute.Order--;
+                        route.Order++;
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
     }
 }

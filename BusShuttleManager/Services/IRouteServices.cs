@@ -15,6 +15,10 @@ namespace BusShuttleManager.Services
         public int GetAmountOfRoutes();
 
         public void CreateNewRoute(int order, int loopId, int stopId);
+
+        public void IncreaseRouteOrder(int id);
+
+        public void DecreaseRouteOrder(int id);
     }
 
 }

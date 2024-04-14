@@ -43,12 +43,20 @@
         {
             <tr>
                 <td>
-                    <form asp-action="MoveUp" asp-route-id="@item.Id">
+                    @using (Html.BeginForm("MoveRouteUp", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" name="routeId" value="@item.Id"/>
+                        <input type="hidden" name="selectedLoopId" value="@Model.SelectedLoop.Id" />
                         <button type="submit">Move Up</button>
-                    </form>
-                    <form asp-action="MoveDown" asp-route-id="@item.Id">
+                        
+                    }
+
+                    @using (Html.BeginForm("MoveRouteDown", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" name="routeId" value="@item.Id"/>
+                        <input type="hidden" name="selectedLoopId" value="@Model.SelectedLoop.Id" />
                         <button type="submit">Move Down</button>
-                    </form>
+                    }
                 </td>
                 <td>
                     @if (Model.Stops != null)
