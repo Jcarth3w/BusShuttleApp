@@ -1,5 +1,7 @@
 using DomainModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using BusShuttleManager.Data;
 namespace BusShuttleManager.Services
 {
     public class DriverServices : IDriverService
@@ -7,10 +9,11 @@ namespace BusShuttleManager.Services
         private DataContext db;
         List<Driver> drivers;
 
-        public DriverServices()
+        private readonly ApplicationDbContext _applicationDb;
+
+        public DriverServices(ApplicationDbContext applicationDb)
         {
-            db = new DataContext();
-            db.Add(new Driver{FirstName="Jack", LastName="Carthew"});
+            _applicationDb = applicationDb;
         }
 
 
@@ -58,10 +61,11 @@ namespace BusShuttleManager.Services
             return db.Driver.Count();
         }
 
-        public void CreateNewDriver(int id, string fName, string lName)
+
+        public void CreateNewDriver(int id, string fName, string lName, string email)
         {
             db = new DataContext();
-            db.Add(new Driver{Id=id, FirstName=fName, LastName=lName});
+            db.Add(new Driver{Id=id, FirstName=fName, LastName=lName, Email=email});
             db.SaveChanges();
         }
 
@@ -73,6 +77,19 @@ namespace BusShuttleManager.Services
             {
                 db.Driver.Remove(driver);
                 db.SaveChanges(); 
+            }
+        }
+        
+        public string FindDriverByEmail(string email)
+        {
+            var user = _applicationDb.Users.FirstOrDefault(u => u.Email == email);
+            if (user != null)
+            {
+                return user.Email;
+            }
+            else
+            {
+                return "";
             }
         }
     }

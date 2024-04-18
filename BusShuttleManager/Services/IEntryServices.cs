@@ -8,9 +8,9 @@ namespace BusShuttleManager.Services
 
         public Entry findEntryById(int id);
 
-        public void UpdateEntryById(int id, DateTime timeStamp, int boarded, int leftBehind);
-
         public void CreateNewEntry(DateTime timeStamp, int boarded, int leftBehind);
+
+        public List<Entry> getEntriesByDate(DateTime dateTime);
     }
 
 }

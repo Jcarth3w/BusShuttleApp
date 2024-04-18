@@ -1,6 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Security.Claims;
 using BusShuttleManager.Models;
 using DomainModel;
@@ -12,6 +16,7 @@ namespace BusShuttleManager.Services;
 public class HomeController : Controller 
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly UserManager<IdentityUser> _userManager;
     IDriverService driverService;
 
     IBusService busService;
@@ -25,16 +30,35 @@ public class HomeController : Controller
     ILoopService loopService;
 
 
+
     public HomeController(ILogger<HomeController> logger, IDriverService dService, IBusService bService, 
-        IRouteService rService, IStopService sService, IEntryService eService, ILoopService lService)
+        IRouteService rService, IStopService sService, IEntryService eService, ILoopService lService, UserManager<IdentityUser> userManager)
     {
         _logger = logger;
+        _userManager = userManager;
         this.driverService = dService;
         this.busService = bService;
         this.routeService = rService;
         this.stopService = sService;
         this.entryService = eService;
         this.loopService = lService;
+    }
+
+    [Authorize(Policy = "ManagerOnly")]
+    public IActionResult ManagerPage()
+    {
+        return View();
+    }
+
+    [Authorize(Policy = "ActivatedDriver")]
+    public IActionResult DriverPage()
+    {
+        var loops = loopService.getAllLoops(); 
+        var busses = busService.getAllBusses();
+        var drivers = driverService.getAllDrivers();
+
+        var viewModel = DriverPageViewModel.FromData(loops, busses, drivers);
+        return View(viewModel);
     }
 
     /*DRIVERS*/
@@ -89,12 +113,29 @@ public class HomeController : Controller
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreateDriver(int id, [Bind("FirstName,LastName")] CreateDriverModel driver)
+    public async Task<IActionResult> CreateDriver(int id, [Bind("FirstName,LastName,Email")] CreateDriverModel driver)
     {
-   
-        driverService.CreateNewDriver(id, driver.FirstName, driver.LastName);
-        return Redirect("Drivers");
+        _logger.LogInformation("Email: " + driver.Email);
 
+        _logger.LogInformation("Found email: " + driverService.FindDriverByEmail(driver.Email));
+        if(driverService.FindDriverByEmail(driver.Email) == "")
+        {
+           
+            ModelState.AddModelError("Email", "Email not found");
+
+            var driverCreateModel = CreateDriverModel.NewDriver(id); 
+            return View(driverCreateModel);
+        }
+
+        driverService.CreateNewDriver(id, driver.FirstName, driver.LastName, driver.Email);
+
+        var user = await _userManager.FindByEmailAsync(driver.Email);
+    
+        if (user != null)
+        {
+            await _userManager.AddClaimAsync(user, new Claim("IsActivated", "true"));
+        }
+        return RedirectToAction("Drivers");
     }
 
 
@@ -318,9 +359,42 @@ public class HomeController : Controller
     }
 
 
+    /*ENTRIES*/
     [Authorize(Policy = "ManagerOnly")]
+    [HttpGet]
     public IActionResult Entries()
     {
-        return View(entryService.getAllEntries().Select(e => EntryViewModel.FromEntry(e)));
+        var entries = entryService.getAllEntries().ToList();
+        var viewModels = entries.Select(entry =>
+        {
+            var loop = loopService.getLoopById(entry.LoopId);
+            var driver = driverService.findDriverById(entry.DriverId);
+            var stop = stopService.findStopById(entry.StopId);
+            var bus = busService.findBusById(entry.BusId);
+
+            return EntryViewModel.FromEntry(entry, loop, driver, stop, bus);
+        }).ToList();
+
+        return View(viewModels);
+    }
+
+
+    [Authorize(Policy = "ManagerOnly")]
+    [HttpGet]
+    public IActionResult SearchEntries([FromQuery]DateTime dateTime)
+    {
+        var entries = entryService.getEntriesByDate(dateTime).ToList();
+        _logger.LogInformation("Entered time:" + dateTime);
+        var viewModels = entries.Select(entry =>
+        {
+            var loop = loopService.getLoopById(entry.LoopId);
+            var driver = driverService.findDriverById(entry.DriverId);
+            var stop = stopService.findStopById(entry.StopId);
+            var bus = busService.findBusById(entry.BusId);
+
+            return EntryViewModel.FromEntry(entry, loop, driver, stop, bus);
+        }).ToList();
+
+        return View(viewModels);
     }
 }

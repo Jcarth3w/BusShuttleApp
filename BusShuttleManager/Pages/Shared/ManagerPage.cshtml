@@ -1,10 +1,18 @@
-@model IEnumerable<BusShuttleManager.Models.LoopViewModel>
 @{
-    ViewData["Title"] = "Loops";
+    ViewData["Title"] = "Manager Dashboard";
 }
 
-<h2>Loops</h2>
-<header>
+<h2>Manager Dashboard</h2>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bus Manager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BusShuttleManager.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -36,28 +44,15 @@
             </div>
         </nav>
     </header>
-<a asp-action="CreateLoop">Create new loop</a>
 
-<table class="dataTable">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="UpdateLoop" asp-route-id="@item.Id">Edit</a> | <a asp-action="DeleteLoop" 
-                    asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - BusShuttleManager - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

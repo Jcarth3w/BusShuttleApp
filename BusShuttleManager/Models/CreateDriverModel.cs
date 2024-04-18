@@ -16,9 +16,7 @@ namespace BusShuttleManager.Models
 
         public string LastName {get; set;}
 
-        public string Username {get; set;}
-
-        public string Password {get; set;}
+        public string Email {get; set;}
 
         public static CreateDriverModel NewDriver(int amountOfDrivers)
         {
@@ -28,7 +26,8 @@ namespace BusShuttleManager.Models
             {
                 Id = newId,
                 FirstName = "",
-                LastName = ""
+                LastName = "",
+                Email = ""
             };
         }
     }

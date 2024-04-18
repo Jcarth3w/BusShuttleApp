@@ -13,6 +13,15 @@ namespace DomainModel
 
         public int LeftBehind {get; set;}
 
+        public int LoopId {get; set;}
+
+        public int DriverId {get; set;}
+
+        public int StopId {get; set;}
+
+        public int BusId {get; set;}
+
+
         public Entry()
         {
 
@@ -26,11 +35,15 @@ namespace DomainModel
             LeftBehind = leftBehind;
         }
 
-        public Entry(DateTime timeStamp, int boarded, int leftBehind)
+        public Entry(DateTime timeStamp, int boarded, int leftBehind, int loopId, int driverId, int stopId, int busId)
         {
             TimeStamp = timeStamp;
             Boarded = boarded;
             LeftBehind = leftBehind;
+            LoopId = loopId;
+            DriverId = driverId;
+            StopId = stopId;
+            BusId = busId;
         }
 
         public Entry(Entry entry)
@@ -40,15 +53,6 @@ namespace DomainModel
             Boarded = entry.Boarded;
             LeftBehind = entry.LeftBehind;
         }
-
-        public void Update(DateTime timeStamp, int boarded, int leftBehind)
-        {
-            TimeStamp = timeStamp;
-            Boarded = boarded;
-            LeftBehind = leftBehind;
-        }
-
-        
     }
 }
 

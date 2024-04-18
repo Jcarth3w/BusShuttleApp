@@ -12,9 +12,11 @@ namespace BusShuttleManager.Services
 
         public int GetAmountOfDrivers();
 
-        public void CreateNewDriver(int id, string fName, string lName);
+        public void CreateNewDriver(int id, string fName, string lName, string email);
 
         public void DeleteDriver(int id);
+
+        public string FindDriverByEmail(string email);
     }
 
 }

@@ -1,9 +1,12 @@
-@model IEnumerable<BusShuttleManager.Models.LoopViewModel>
+@model IEnumerable<BusShuttleManager.Models.EntryViewModel>
 @{
-    ViewData["Title"] = "Loops";
+    ViewData["Title"] = "Entries";
 }
 
-<h2>Loops</h2>
+<h2>Entries</h2>
+
+<a asp-action='Entries'>All entries</a>
+
 <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -36,27 +39,54 @@
             </div>
         </nav>
     </header>
-<a asp-action="CreateLoop">Create new loop</a>
+
+<form method="get" action='@Url.Action("SearchEntries", "Home")'>
+    <label for="datePicker">Select Date:</label>
+    <input type="date" id="datePicker" name="dateTime">
+    <button type="submit">Search</button>
+</form>
 
 <table class="dataTable">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Boarded
+            </th>
+            <th>
+                Left Behind
+            </th>
+            <th>
+                Loop
+            </th>
+            <th>
+                Bus
+            </th>
+            <th>
+                Driver
+            </th>
+            <th>
+                Stop
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var entry in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="UpdateLoop" asp-route-id="@item.Id">Edit</a> | <a asp-action="DeleteLoop" 
-                    asp-route-id="@item.Id">Delete</a>
-                </td>
+                <td>@entry.TimeStamp.ToString("MM/dd/yyyy")</td>
+                <td>@entry.TimeStamp.ToString("HH:ss")</td>
+                <td>@entry.Boarded</td>
+                <td>@entry.LeftBehind</td>
+                <td>@entry.LoopName</td>
+                <td>@entry.BusName</td>
+                <td>@entry.DriverName</td>
+                <td>@entry.StopName</td>
             </tr>
         }
     </tbody>

@@ -21,6 +21,13 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireRole("Manager");
     });
+
+    options.AddPolicy("ActivatedDriver", policy =>
+    {
+        policy.RequireAuthenticatedUser(); 
+        policy.RequireRole("Driver");
+        policy.RequireClaim("IsActivated", "true"); 
+    });
 });
 
 builder.Services.AddRazorPages();

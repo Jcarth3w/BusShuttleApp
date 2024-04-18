@@ -4,52 +4,86 @@
 }
 
 <h2>Entries</h2>
-<button asp-action="Add entry">Create new entry</button>
+<header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                           <a class="nav-link text-dark" asp-controller="Home" asp-action="Drivers">Drivers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Busses">Buses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Stops">Stops</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Routes">Routes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Loops">Loops</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Entries">Entries</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+<form method="get" action='@Url.Action("SearchEntries", "Home")'>
+    <label for="datePicker">Select Date:</label>
+    <input type="date" id="datePicker" name="dateTime">
+    <button type="submit">Search</button>
+</form>
 
 <table class="dataTable">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeStamp)
+                Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Boarded)
+                Boarded
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LeftBehind)
+                Left Behind
+            </th>
+            <th>
+                Loop
+            </th>
+            <th>
+                Bus
+            </th>
+            <th>
+                Driver
+            </th>
+            <th>
+                Stop
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var entry in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item.Id)
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item.TimeStamp)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item.Boarded)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item.LeftBehind)
-                </td>
-            </tr>
-            <tr>
-                <button asp-action="Edit" asp-Routes-id="@item.Id">Edit</button> | <button asp-action="Delete" 
-                asp-Routes-id="@item.Id">Delete</button>
+                <td>@entry.TimeStamp.ToString("MM/dd/yyyy")</td>
+                <td>@entry.TimeStamp.ToString("HH:ss")</td>
+                <td>@entry.Boarded</td>
+                <td>@entry.LeftBehind</td>
+                <td>@entry.LoopName</td>
+                <td>@entry.BusName</td>
+                <td>@entry.DriverName</td>
+                <td>@entry.StopName</td>
             </tr>
         }
     </tbody>

@@ -20,14 +20,10 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <span id="noEmailFound" class="text-danger" style="display: none;">No email found</span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -40,4 +36,16 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        var emailInput = document.getElementById("Email");
+        var noEmailFoundMessage = document.getElementById("noEmailFound");
+
+        emailInput.addEventListener("input", function () {
+            if (emailInput.value.trim() === "") {
+                noEmailFoundMessage.style.display = "block";
+            } else {
+                noEmailFoundMessage.style.display = "none";
+            }
+        });
+    </script>
 }
