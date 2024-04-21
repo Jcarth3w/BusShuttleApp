@@ -8,8 +8,7 @@ namespace BusShuttleManager.Services
 
         public BusServices()
         { 
-            db = new DataContext();
-            db.Add(new Bus{BusName="Bus1"});
+
         }
 
         public List<Bus> getAllBusses()
