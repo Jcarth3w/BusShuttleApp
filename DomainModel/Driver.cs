@@ -12,9 +12,11 @@ namespace DomainModel
 
         public string Email {get; set;}
 
+        public bool IsActive { get; set; }
+
         public Driver()
         {
-            
+           IsActive = true;
         }
 
         public Driver(int id, string fName, string lName)

@@ -15,7 +15,7 @@ namespace DomainModel
 
           public int StopId {get; set;}
 
-          public Stop stop {get; set;}
+          public Stop Stop {get; set;}
 
           public Routes()
           {

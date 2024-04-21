@@ -20,6 +20,12 @@ namespace BusShuttleManager.Services
             return busses;
         }
 
+        public List<Bus> getActiveBusses()
+        {
+            db = new DataContext();
+            return db.Bus.Where(bus => bus.IsActive).ToList();
+        }
+
         public Bus findBusById(int id)
         {
             db = new DataContext();
@@ -41,6 +47,18 @@ namespace BusShuttleManager.Services
             if(bus != null)
             {
                 bus.BusName = name;
+                db.SaveChanges();
+            }
+        }
+
+        public void deactivateBus(int id)
+        {
+            db = new DataContext();
+            var existingBus = db.Bus.FirstOrDefault(b => b.Id == id);
+        
+            if (existingBus != null)
+            {
+                existingBus.IsActive = false;
                 db.SaveChanges();
             }
         }

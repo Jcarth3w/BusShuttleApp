@@ -14,6 +14,12 @@ namespace BusShuttleManager.Services
             return loops;
         }
 
+        public List<Loop> getActiveLoops()
+        {
+            db = new DataContext();
+            return db.Loop.Where(loop => loop.IsActive).ToList();
+        }
+
         public Loop getLoopById(int id)
         {
             db = new DataContext();
@@ -38,6 +44,20 @@ namespace BusShuttleManager.Services
                 db.SaveChanges();
             }
         }
+
+        public void deactivateLoop(Loop loop)
+        {
+            db = new DataContext();
+            var existingLoop = db.Loop.FirstOrDefault(l => l.Id == loop.Id);
+        
+            if (existingLoop != null)
+            {
+                existingLoop.IsActive = false;
+                db.SaveChanges();
+            }
+
+        }
+
         public int GetAmountOfLoops()
         {
             db = new DataContext();

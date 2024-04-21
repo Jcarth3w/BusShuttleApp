@@ -6,6 +6,8 @@ namespace BusShuttleManager.Services
     {
         public List<Driver> getAllDrivers();
 
+        public List<Driver> getActiveDrivers();
+
         public Driver findDriverById(int id);
 
         public void UpdateDriverById(int id, string fName, string lName);
@@ -14,9 +16,9 @@ namespace BusShuttleManager.Services
 
         public void CreateNewDriver(int id, string fName, string lName, string email);
 
-        public void DeleteDriver(int id);
-
         public string FindDriverByEmail(string email);
+
+        public void deactivateDriver(int id);
     }
 
 }

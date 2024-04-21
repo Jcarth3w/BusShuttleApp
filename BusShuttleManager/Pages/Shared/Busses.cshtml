@@ -36,7 +36,7 @@
             </div>
         </nav>
     </header>
-<a asp-action="CreateBus">Create new bus</a>
+<a asp-action="CreateBus" class="button">Create new bus</a>
 
 <table class="dataTable">
     <thead>
@@ -54,8 +54,12 @@
                     @Html.DisplayFor(modelItem => item.BusName)
                 </td>
                 <td>
-                    <a asp-action="UpdateBus" asp-route-id="@item.Id">Edit</a> | <a asp-action="DeleteBus" 
-                    asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="UpdateBus" asp-route-id="@item.Id">Edit</a> 
+                    <form method="post" action='@Url.Action("DeleteBus", "Home")'>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit">Delete Bus</button>
+                    </form>
                 </td>
             </tr>
         }

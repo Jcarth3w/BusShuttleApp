@@ -4,7 +4,39 @@
 }
 
 <h2>Drivers</h2>
-<a asp-action="CreateDriver">Add new driver</a>
+<header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                           <a class="nav-link text-dark" asp-controller="Home" asp-action="Drivers">Drivers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Busses">Buses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Stops">Stops</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Routes">Routes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Loops">Loops</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Entries">Entries</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+<a asp-action="CreateDriver" class="button">Add new driver</a>
 
 <table class="dataTable">
     <thead>
@@ -21,8 +53,12 @@
                 <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                 <td>@Html.DisplayFor(modelItem => item.LastName)</td>
                 <td>
-                    <a asp-action="UpdateDriver" asp-route-id="@item.Id">Edit</a> | 
-                    <a asp-action="DeleteDriver" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="UpdateDriver" asp-route-id="@item.Id" class="button">Edit</a>
+                    <form method="post" action='@Url.Action("DeleteDriver", "Home")'>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit">Delete Driver</button>
+                    </form>
                 </td>
             </tr>
         }

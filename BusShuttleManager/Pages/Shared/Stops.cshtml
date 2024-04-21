@@ -37,7 +37,7 @@
             </div>
         </nav>
     </header>
-<a asp-action="CreateStop">Create new stop</a>
+<a asp-action="CreateStop" class="button">Create new stop</a>
 
 <table class="dataTable">
     <thead>
@@ -55,8 +55,12 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="UpdateStop" asp-route-id="@item.Id">Edit</a> | <a asp-action="Delete" 
-                    asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="UpdateStop" asp-route-id="@item.Id">Edit</a> 
+                    <form method="post" action='@Url.Action("DeleteStop", "Home")'>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit">Delete Stop</button>
+                    </form>
                 </td>
             </tr>
         }

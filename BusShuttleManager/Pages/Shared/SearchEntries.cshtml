@@ -5,7 +5,7 @@
 
 <h2>Entries</h2>
 
-<a asp-action='Entries'>All entries</a>
+<a class="button" asp-action='Entries'>All entries</a>
 
 <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -43,6 +43,14 @@
 <form method="get" action='@Url.Action("SearchEntries", "Home")'>
     <label for="datePicker">Select Date:</label>
     <input type="date" id="datePicker" name="dateTime">
+    <label for="loopSelect">Select Loop:</label>
+    <select id="loopSelect" name="loopId">
+        <option value="">All</option>
+        @foreach (var loop in ViewBag.Loops)
+        {
+            <option value="@loop.Id">@loop.Name</option>
+        }
+    </select>
     <button type="submit">Search</button>
 </form>
 
@@ -91,3 +99,10 @@
         }
     </tbody>
 </table>
+
+
+<form method="get">
+    <input type="hidden" name="dateTime" value="@ViewBag.DateTime" />
+    <input type="hidden" name="loopId" value="@ViewBag.LoopId" />
+    <button type="submit">Export to CSV</button>
+</form>

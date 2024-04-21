@@ -9,9 +9,11 @@ namespace DomainModel
 
           public string BusName {get; set;}
 
+          public bool IsActive { get; set; }
+
           public Bus()
           {
-               
+               IsActive = true;
           }
 
           public Bus(int id, string name)

@@ -26,6 +26,12 @@ namespace BusShuttleManager.Services
             return drivers;
         }
 
+        public List<Driver> getActiveDrivers()
+        {
+            db = new DataContext();
+            return db.Driver.Where(driver => driver.IsActive).ToList();
+        }
+
         public Driver findDriverById(int id)
         {
             db = new DataContext();
@@ -68,17 +74,6 @@ namespace BusShuttleManager.Services
             db.Add(new Driver{Id=id, FirstName=fName, LastName=lName, Email=email});
             db.SaveChanges();
         }
-
-        public void DeleteDriver(int id)
-        {
-            db = new DataContext();
-            var driver = db.Driver.FirstOrDefault(d => d.Id == id);
-            if (driver != null)
-            {
-                db.Driver.Remove(driver);
-                db.SaveChanges(); 
-            }
-        }
         
         public string FindDriverByEmail(string email)
         {
@@ -90,6 +85,18 @@ namespace BusShuttleManager.Services
             else
             {
                 return "";
+            }
+        }
+
+        public void deactivateDriver(int id)
+        {
+            db = new DataContext();
+            var existingDriver = db.Driver.FirstOrDefault(d => d.Id == id);
+        
+            if (existingDriver != null)
+            {
+                existingDriver.IsActive = false;
+                db.SaveChanges();
             }
         }
     }

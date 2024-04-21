@@ -14,6 +14,13 @@ namespace BusShuttleManager.Services
             return stops;
         }
 
+        public List<Stop> getActiveStops()
+        {
+            db = new DataContext();
+            return db.Stop.Where(stop => stop.IsActive).ToList();
+        }
+
+
         public Stop findStopById(int id)
         {
             db = new DataContext();
@@ -50,6 +57,18 @@ namespace BusShuttleManager.Services
             db = new DataContext();
             db.Add(new Stop{Id = id, Name=name, Latitude=lat, Longitude=lon});
             db.SaveChanges();
+        }
+
+        public void deactivateStop(int id)
+        {
+            db = new DataContext();
+            var existingStop = db.Stop.FirstOrDefault(s => s.Id == id);
+        
+            if (existingStop != null)
+            {
+                existingStop.IsActive = false;
+                db.SaveChanges();
+            }
         }
     }
 }

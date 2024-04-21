@@ -23,12 +23,12 @@ namespace BusShuttleManager.Services
             return new Entry(entry);
         }
 
-
-        public void CreateNewEntry(DateTime timeStamp, int boarded, int leftBehind)
+        public void createNewEntry(DateTime timeStamp, int boarded, int leftBehind, int busId, int driverId, int loopId, int stopId)
         {
             db = new DataContext();
             var totalEntries = db.Entry.Count();
-            db.Add(new Entry{Id = totalEntries+1, TimeStamp=timeStamp, Boarded=boarded, LeftBehind=leftBehind});
+            db.Add(new Entry{Id = totalEntries+1, TimeStamp=timeStamp, Boarded=boarded, LeftBehind=leftBehind, 
+                BusId=busId, DriverId=driverId, LoopId=loopId, StopId=stopId});
             db.SaveChanges();
         }
 
@@ -39,5 +39,28 @@ namespace BusShuttleManager.Services
                      .Where(entry => entry.TimeStamp.Date == selectedDate.Date)
                      .ToList();
         }
+
+        public List<Entry> getEntriesByLoopId(int loopId)
+        {
+            db = new DataContext();
+            return db.Entry
+                     .Where(entry => entry.LoopId == loopId)
+                     .ToList();
+        }
+
+        public List<Entry> getEntriesByDateAndLoop(DateTime dateTime, int loopId)
+        {
+            db = new DataContext();
+            return db.Entry
+                .Where(entry => entry.TimeStamp.Date == dateTime.Date && entry.LoopId == loopId)
+                .ToList();
+        }
+
+        public Entry getEntryForLoopBusDriver(int loopId, int busId, int driverId)
+        {
+            db = new DataContext();
+            return db.Entry.FirstOrDefault(e => e.LoopId == loopId && e.BusId == busId && e.DriverId == driverId);
+        }
+
     }
 }

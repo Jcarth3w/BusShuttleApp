@@ -13,9 +13,11 @@ namespace DomainModel
 
         public double Longitude {get; set;}
 
+        public bool IsActive { get; set; }
+
         public Stop()
         {
-
+            IsActive = true;
         }
 
         public Stop(int id, string name, double lat, double lon)

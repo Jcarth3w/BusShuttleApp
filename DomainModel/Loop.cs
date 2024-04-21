@@ -6,11 +6,13 @@ public class Loop
 
      public string Name {get; set;}
 
+     public bool IsActive { get; set; }
+
      public List<Routes> Routes { get; set;}
 
      public Loop()
      {
-
+          IsActive = true;
      }
 
      public Loop(int id, string name)
